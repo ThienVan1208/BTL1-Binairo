@@ -6,50 +6,14 @@ class DFSSolver(Solver):
         
         self.stack = [self.initial_state]
         self.visited = set()
-        print(self.initial_state)
-
-    def is_valid_partial_state(self, state: tuple) -> bool:
-        """
-        Validates the board state against all Binairo rules.
-        """
-        max_count = self.grid_size // 2
-
-        # Check Rows
-        for row in state:
-            if row.count(1) > max_count or row.count(2) > max_count:
-                return False
-            for i in range(self.grid_size - 2):
-                if row[i] != 0 and row[i] == row[i+1] == row[i+2]:
-                    return False
-
-        # Duplicate Row Check (Only for fully filled rows)
-        filled_rows = [row for row in state if 0 not in row]
-        if len(filled_rows) != len(set(filled_rows)):
-            return False
-
-        # Check Columns
-        cols = tuple(tuple(state[r][c] for r in range(self.grid_size)) for c in range(self.grid_size))
-        for col in cols:
-            if col.count(1) > max_count or col.count(2) > max_count:
-                return False
-            for i in range(self.grid_size - 2):
-                if col[i] != 0 and col[i] == col[i+1] == col[i+2]:
-                    return False
-
-        # 4. Duplicate Column Check (Only for fully filled columns)
-        filled_cols = [col for col in cols if 0 not in col]
-        if len(filled_cols) != len(set(filled_cols)):
-            return False
-
-        return True
 
     def get_next_step(self) -> tuple[tuple, str]:
         if self.is_finished:
-            return None, "Already finished!"
+            return None, "Already finished"
 
         if not self.stack:
             self.is_finished = True
-            return None, "Failed: No solution found."
+            return None, "No solution found."
 
         # Pop the most recently added state from the top of the stack
         current_state = self.stack.pop()
@@ -58,7 +22,7 @@ class DFSSolver(Solver):
         while current_state in self.visited:
             if not self.stack:
                 self.is_finished = True
-                return None, "Failed: No solution found."
+                return None, "No solution found."
             current_state = self.stack.pop()
 
         self.visited.add(current_state)
@@ -68,7 +32,7 @@ class DFSSolver(Solver):
         if h_cost == 0 and self.is_valid_partial_state(current_state):
             self.is_finished = True
             self.is_solved = True
-            return current_state, "Solved!"
+            return current_state, "Solved"
 
         # Find the first empty cell to expand
         empty_r, empty_c = -1, -1

@@ -300,7 +300,7 @@ class LevelManager:
 class GameManager:
     def __init__(self, solver_type="simple_solver"):
         initial_level =  [
-            # Level 1: Beginner
+            # Level 1
             [
                 [1, 0, 0, 0, 2, 0],
                 [0, 0, 2, 2, 0, 1],
@@ -310,7 +310,7 @@ class GameManager:
                 [0, 1, 0, 0, 2, 1]
             ],
 
-            # Level 2: Sandwiches and Pairs
+            # Level 2
             [
                 [1, 0, 2, 1, 0, 0],
                 [2, 1, 0, 0, 2, 1],
@@ -320,7 +320,7 @@ class GameManager:
                 [0, 0, 1, 0, 2, 0]
             ],
 
-            # Level 3: Gaps closing
+            # Level 3
             [
                 [0, 0, 2, 2, 0, 1],
                 [0, 2, 0, 1, 0, 0],
@@ -330,7 +330,7 @@ class GameManager:
                 [1, 0, 0, 1, 0, 0]
             ],
 
-            # Level 4: Hidden Doubles
+            # Level 4
             [
                 [2, 0, 0, 2, 2, 0],
                 [0, 2, 0, 0, 0, 2],
@@ -340,7 +340,7 @@ class GameManager:
                 [1, 2, 0, 0, 0, 0]
             ],
 
-            # Level 5: Pattern Watch
+            # Level 5
             [
                 [1, 0, 2, 1, 0, 2],
                 [0, 0, 0, 1, 0, 0],
@@ -350,7 +350,7 @@ class GameManager:
                 [2, 0, 0, 0, 0, 0]
             ],
 
-            # Level 6: Keep Count
+            # Level 6
             [
                 [1, 0, 0, 0, 0, 2],
                 [0, 1, 0, 0, 2, 1],
@@ -360,7 +360,7 @@ class GameManager:
                 [0, 0, 1, 1, 0, 1]
             ],
 
-            # Level 7: Symmetry Split
+            # Level 7
             [
                 [1, 0, 2, 0, 0, 0],
                 [0, 0, 1, 2, 0, 2],
@@ -370,7 +370,7 @@ class GameManager:
                 [0, 1, 0, 0, 2, 0]
             ],
 
-            # Level 8: Corner Trap
+            # Level 8
             [
                 [0, 0, 1, 2, 0, 1],
                 [1, 0, 2, 0, 1, 0],
@@ -380,7 +380,7 @@ class GameManager:
                 [0, 1, 2, 0, 0, 2]
             ],
 
-            # Level 9: Tricky Deduction
+            # Level 9
             [
                 [2, 0, 0, 2, 0, 0],
                 [0, 2, 2, 0, 2, 0],
@@ -390,7 +390,7 @@ class GameManager:
                 [0, 2, 0, 1, 0, 2]
             ],
 
-            # Level 10: Advanced
+            # Level 10
             [
                 [2, 0, 1, 0, 2, 0],
                 [0, 2, 0, 1, 0, 1],

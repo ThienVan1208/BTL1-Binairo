@@ -18,11 +18,11 @@ class Solver(ABC):
     
     def is_valid_partial_state(self, state: tuple) -> bool:
         """
-        Checks if the current grid breaks any Binairo rules.
+        Validates the board state against all Binairo rules.
         """
         max_count = self.grid_size // 2
 
-        # Check rows
+        # Check Rows
         for row in state:
             if row.count(1) > max_count or row.count(2) > max_count:
                 return False
@@ -30,15 +30,23 @@ class Solver(ABC):
                 if row[i] != 0 and row[i] == row[i+1] == row[i+2]:
                     return False
 
-        # Check columns
-        for col_idx in range(self.grid_size):
-            col = [state[row_idx][col_idx] for row_idx in range(self.grid_size)]
+        # Duplicate Row Check (Only for fully filled rows)
+        filled_rows = [row for row in state if 0 not in row]
+        if len(filled_rows) != len(set(filled_rows)):
+            return False
+
+        # Check Columns
+        cols = tuple(tuple(state[r][c] for r in range(self.grid_size)) for c in range(self.grid_size))
+        for col in cols:
             if col.count(1) > max_count or col.count(2) > max_count:
                 return False
             for i in range(self.grid_size - 2):
                 if col[i] != 0 and col[i] == col[i+1] == col[i+2]:
                     return False
 
-        # Note: Duplicate rows/cols are usually checked only when the board is fully filled 
-        # to save performance during the search.
+        # 4. Duplicate Column Check (Only for fully filled columns)
+        filled_cols = [col for col in cols if 0 not in col]
+        if len(filled_cols) != len(set(filled_cols)):
+            return False
+
         return True
