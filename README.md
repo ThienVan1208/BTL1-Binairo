@@ -16,6 +16,17 @@ python binairo.py hill_climbing.py
 python binairo.py dfs.py
 ```
 
+How to run benmark:
+1. Requirement:
+```
+pip install pandas openpyxl
+```
+
+2. Run:
+```
+python run_benmarks.py
+```
+
 RULE:
 1. No Three in a Row: You cannot have more than two of the same number next to each other, either horizontally or vertically. EX:
     - Allowed: 0 0 1 1 0 1, 1 1 0 0 1 0
@@ -114,5 +125,22 @@ def get_next_step():
     if can not update state: -> cur_state = fill_random_value(cur_state)
 
 ```
+
+
+
+BENMARK EXPLAIN:
+1. Memory Consumption:
+- DFS (Blind Search): Consumes a lot of memory. It must store every board state it visits (using a Stack and a Visited set) so it can backtrack later. The harder the level, the larger the search tree, and the more memory it eats up.
+
+- Hill Climbing (Heuristic Search): Consumes very little memory. It only keeps track of the current board and its immediate neighbors to calculate the heuristic score (number of rule conflicts). It does not remember past moves, keeping memory usage low and constant.
+
+2. Execution Time:
+- DFS: Steady but can be slow. It blindly tests combinations. If the correct solution is buried deep in the search tree, DFS wastes a lot of time exploring wrong paths before finding the right one.
+
+- Hill Climbing: Usually very fast, but unpredictable. The heuristic guides it quickly toward the correct answer. However, it can easily get stuck in a "Local Maximum" (a state where no single move improves the board). When stuck, it is forced to do a "Random Restart," which causes the execution time to fluctuate significantly across different runs.
+
+***Summary:
+- DFS guarantees a solution but is heavy on memory and time. 
+- Hill Climbing is lightweight and fast, but relies on luck (random restarts) to escape dead ends.
 
 

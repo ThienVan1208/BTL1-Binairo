@@ -1,7 +1,9 @@
 import pygame
+import tracemalloc
 import time
 from abc import ABC, abstractmethod
-import sys  
+import sys
+import json  
 from dfs import DFSSolver
 from hill_climbing import HillClimbingSolver
 
@@ -302,107 +304,21 @@ class LevelManager:
         
 class GameManager:
     def __init__(self, solver_type="simple_solver"):
-        initial_levels =  [
-            # Level 1
-            [
-                [1, 0, 0, 0, 2, 0],
-                [0, 0, 2, 2, 0, 1],
-                [0, 2, 1, 0, 0, 1],
-                [1, 0, 2, 2, 1, 0],
-                [0, 0, 0, 0, 0, 2],
-                [0, 1, 0, 0, 2, 1]
-            ],
-
-            # Level 2
-            [
-                [1, 0, 2, 1, 0, 0],
-                [2, 1, 0, 0, 2, 1],
-                [0, 2, 0, 2, 0, 1],
-                [0, 2, 1, 0, 1, 0],
-                [2, 0, 0, 1, 0, 2],
-                [0, 0, 1, 0, 2, 0]
-            ],
-
-            # Level 3
-            [
-                [0, 0, 2, 2, 0, 1],
-                [0, 2, 0, 1, 0, 0],
-                [1, 0, 2, 2, 0, 2],
-                [0, 2, 0, 0, 0, 1],
-                [2, 0, 0, 0, 2, 0],
-                [1, 0, 0, 1, 0, 0]
-            ],
-
-            # Level 4
-            [
-                [2, 0, 0, 2, 2, 0],
-                [0, 2, 0, 0, 0, 2],
-                [1, 0, 0, 0, 2, 0],
-                [0, 1, 2, 0, 2, 1],
-                [0, 0, 1, 2, 0, 0],
-                [1, 2, 0, 0, 0, 0]
-            ],
-
-            # Level 5
-            [
-                [1, 0, 2, 1, 0, 2],
-                [0, 0, 0, 1, 0, 0],
-                [2, 1, 0, 0, 1, 0],
-                [0, 0, 0, 2, 1, 2],
-                [0, 2, 2, 0, 0, 0],
-                [2, 0, 0, 0, 0, 0]
-            ],
-
-            # Level 6
-            [
-                [1, 0, 0, 0, 0, 2],
-                [0, 1, 0, 0, 2, 1],
-                [2, 0, 2, 2, 0, 0],
-                [1, 2, 0, 1, 0, 0],
-                [0, 1, 0, 2, 0, 0],
-                [0, 0, 1, 1, 0, 1]
-            ],
-
-            # Level 7
-            [
-                [1, 0, 2, 0, 0, 0],
-                [0, 0, 1, 2, 0, 2],
-                [0, 1, 0, 0, 0, 1],
-                [1, 2, 2, 0, 0, 0],
-                [0, 0, 0, 2, 1, 0],
-                [0, 1, 0, 0, 2, 0]
-            ],
-
-            # Level 8
-            [
-                [0, 0, 1, 2, 0, 1],
-                [1, 0, 2, 0, 1, 0],
-                [0, 2, 0, 0, 2, 0],
-                [0, 0, 0, 0, 0, 1],
-                [2, 0, 1, 1, 0, 0],
-                [0, 1, 2, 0, 0, 2]
-            ],
-
-            # Level 9
-            [
-                [2, 0, 0, 2, 0, 0],
-                [0, 2, 2, 0, 2, 0],
-                [0, 0, 0, 2, 1, 0],
-                [2, 0, 0, 0, 1, 0],
-                [0, 0, 2, 0, 0, 1],
-                [0, 2, 0, 1, 0, 2]
-            ],
-
-            # Level 10
-            [
-                [2, 0, 1, 0, 2, 0],
-                [0, 2, 0, 1, 0, 1],
-                [1, 0, 0, 0, 1, 2],
-                [2, 0, 1, 2, 0, 0],
-                [0, 1, 0, 1, 0, 0],
-                [0, 2, 2, 0, 0, 0]
-            ]
-        ]
+        try:
+            with open('levels.json', 'r') as file:
+                data = json.load(file)
+                initial_levels = data['levels']
+        except FileNotFoundError:
+            print("Error: can not find levels.json")
+            initial_levels = [
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0]
+            ] 
+        
         self.level_manager = LevelManager(initial_levels)
         grid = self.level_manager.get_level(0)
         
@@ -497,6 +413,7 @@ class GameManager:
         if self.ai_solver.is_finished:
             return
 
+        tracemalloc.start()
         start_time = time.perf_counter()
         final_state = None
         status = ''
@@ -505,7 +422,10 @@ class GameManager:
             final_state, status = self.ai_solver.get_next_step()
 
         elapsed_time = (time.perf_counter() - start_time) * 1000
+        current, peak = tracemalloc.get_traced_memory() 
+        tracemalloc.stop()
         print(f"Time taken: {elapsed_time:.2f} ms")
+        print(f"Memory: {peak / 1024:.2f} KB")
 
         if final_state:
             self.update_grid_from_state(final_state)

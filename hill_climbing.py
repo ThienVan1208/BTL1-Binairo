@@ -5,7 +5,7 @@ class HillClimbingSolver(Solver):
     def __init__(self, initial_grid: list[list[int]], grid_size: int):
         super().__init__(initial_grid, grid_size)
 
-        self.max_limit = 10
+        self.max_limit = 100
         self.cur_limit = 0
         
         # Keep track of which cells we are allowed to change (the original)
