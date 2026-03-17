@@ -53,7 +53,7 @@ def main():
         print(f"Proccessing {level_name}...")
         
         # ==========================================
-        # 1. ĐÁNH GIÁ DFS (Chỉ cần chạy 1 lần)
+        # DFS
         # ==========================================
         dfs_time, dfs_mem, dfs_steps, dfs_solved = run_single_benchmark(DFSSolver, grid)
         dfs_results.append({
@@ -64,7 +64,7 @@ def main():
         })
         
         # ==========================================
-        # 2. ĐÁNH GIÁ HILL CLIMBING (Chạy 10 lần lấy trung bình)
+        # 2. HILL CLIMBING (Run 10 times to get avg)
         # ==========================================
         RUNS = 10
         total_time = 0
